@@ -2,12 +2,17 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors'); 
-const dotanv = require('dotenv');
+const dotenv = require('dotenv');
 const { bgCyan } = require('colors');
 require('colors');
 
+const connectDb = require('./config/config.js');
+
 // dotenv config
-dotanv.config();
+dotenv.config();
+
+// DB config
+connectDb();
 
 // rest object
 const app = express();
@@ -20,9 +25,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(morgan("dev"));
 
 // routes
-app.get('/', (req, res) => {
-    res.send('<h1>POS BACKEND</h1>');
-});
+app.use('/api/items', require('./routes/itemRoutes.js'));
 
 // port
 const PORT = process.env.PORT || 8080;
