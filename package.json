@@ -1,0 +1,36 @@
+{
+  "name": "point-of-sale",
+  "version": "1.0.0",
+  "description": "Point of sale mern fullstack app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaysmitjadhav/Point-of-Sale.git"
+  },
+  "keywords": [
+    "mongodb",
+    "express",
+    "react",
+    "node"
+  ],
+  "author": "jay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaysmitjadhav/Point-of-Sale/issues"
+  },
+  "homepage": "https://github.com/jaysmitjadhav/Point-of-Sale#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "mongoose": "^6.6.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.20"
+  }
+}
