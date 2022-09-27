@@ -3,7 +3,8 @@ const items = [
     name: "Tea",
     price: 1,
     category: "drinks",
-    image: "https://img.etimg.com/photo/msid-69212931,quality-100/chai-itself-was-once-a-trend-that-developed-this-way-.jpg",
+    image:
+      "https://img.etimg.com/photo/msid-69212931,quality-100/chai-itself-was-once-a-trend-that-developed-this-way-.jpg",
   },
   {
     name: "coffee",
@@ -35,7 +36,8 @@ const items = [
     name: "Eggy",
     price: 5,
     category: "noodles",
-    image: "https://www.licious.in/blog/wp-content/uploads/2020/12/Egg-Noodles-min.jpg",
+    image:
+      "https://www.licious.in/blog/wp-content/uploads/2020/12/Egg-Noodles-min.jpg",
   },
 ];
 module.exports = items;
