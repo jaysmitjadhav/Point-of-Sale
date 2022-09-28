@@ -6,7 +6,9 @@ import {
   PlusCircleOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons";
-import { Table, Button, Modal, Form, Input, Select } from "antd";
+import { Table, Button, Modal, Form, Input, Select, message } from "antd";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const [subTotal, setSubTotal] = useState(0);
@@ -15,6 +17,7 @@ const CartPage = () => {
   const { cartItems } = useSelector((state) => state.rootReducer);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleIncrement = (record) => {
     dispatch({
@@ -87,8 +90,25 @@ const CartPage = () => {
     });
   }, [cartItems]);
 
-  const handleSubmit = (value) => {
-    console.log(value);
+  const handleSubmit = async (value) => {
+    try {
+      const newObject = {
+        ...value,
+        cartItems,
+        subTotal,
+        tax: Number(((subTotal / 100) * 8.5).toFixed(2)),
+        totalAmount: Number(
+          Number(subTotal) + Number(((subTotal / 100) * 8.5).toFixed(2))
+        ),
+        userId: JSON.parse(localStorage.getItem("auth"))._id,
+      };
+      await axios.post("/api/bills/add-bills", newObject);
+      message.success("Check Generated");
+      navigate("/bills");
+    } catch (error) {
+      message.error("Something went wrong");
+      console.log(error);
+    }
   };
 
   return (
@@ -116,7 +136,7 @@ const CartPage = () => {
           <Form.Item name="customerName" label="Customer Name">
             <Input />
           </Form.Item>
-          <Form.Item name="customerContact" label="Customer Number">
+          <Form.Item name="customerNumber" label="Customer Number">
             <Input />
           </Form.Item>
           <Form.Item name="paymentMode" label="Payment Method">

@@ -23,6 +23,10 @@ const billSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    cartItems: {
+      type: Array,
+      required: true,
+    },
   },
   { timestamp: true }
 );
