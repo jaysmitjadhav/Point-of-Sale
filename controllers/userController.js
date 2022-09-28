@@ -3,8 +3,15 @@ const userModel = require("../models/userModel.js");
 const loginController = async (req, res) => {
   try {
     const { userId, password } = req.body;
-    const user = await userModel.findOne({ userId, password, verified: false });
-    res.status(200).send("Log In Success");
+    const user = await userModel.findOne({ userId, password, verified: true });
+    if (user) {
+      res.status(200).send(user);
+    } else {
+      res.json({
+        message: "Login Failed",
+        user,
+      });
+    }
   } catch (error) {
     console.log(error);
   }
@@ -12,7 +19,7 @@ const loginController = async (req, res) => {
 
 const registerController = async (req, res) => {
   try {
-    const newUser = new userModel(req.body);
+    const newUser = new userModel({ ...req.body, verified: true });
     await newUser.save();
     res.status(201).send("Registration Successful");
   } catch (error) {

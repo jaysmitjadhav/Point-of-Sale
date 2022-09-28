@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Button, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -8,13 +8,14 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (value) => {
     try {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const res = await axios.post("/api/users/login");
+      const res = await axios.post("/api/users/login", value);
       message.success("User logged in successfully");
+      localStorage.setItem("auth", JSON.stringify(res.data));
       navigate("/");
     } catch (error) {
       dispatch({
@@ -24,6 +25,13 @@ const Login = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("auth")) {
+      localStorage.getItem("auth");
+      navigate("/");
+    }
+  }, [navigate]);
 
   return (
     <>

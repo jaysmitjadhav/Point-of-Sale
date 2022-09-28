@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Button, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -24,6 +24,13 @@ const Register = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("auth")) {
+      localStorage.getItem("auth");
+      navigate("/");
+    }
+  }, [navigate]);
 
   return (
     <>
