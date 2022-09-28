@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import DefaultLayout from "../components/DefaultLayout";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -6,9 +6,12 @@ import {
   PlusCircleOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons";
-import { Table } from "antd";
+import { Table, Button, Modal, Form, Input, Select } from "antd";
 
 const CartPage = () => {
+  const [subTotal, setSubTotal] = useState(0);
+  const [billPopup, setBillPopup] = useState(false);
+
   const { cartItems } = useSelector((state) => state.rootReducer);
 
   const dispatch = useDispatch();
@@ -76,10 +79,72 @@ const CartPage = () => {
     },
   ];
 
+  useEffect(() => {
+    let temp = 0;
+    cartItems.forEach((item) => {
+      temp = temp + item.price * item.quantity;
+      setSubTotal(temp);
+    });
+  }, [cartItems]);
+
+  const handleSubmit = (value) => {
+    console.log(value);
+  };
+
   return (
     <DefaultLayout>
       <h3>Cart Page</h3>
       <Table columns={columns} dataSource={cartItems} bordered />
+      <div className="d-flex flex-column align-items-end">
+        <hr />
+        <h3>
+          Subtotal: $ <b>{subTotal}</b>
+        </h3>
+        <Button type="primary" onClick={() => setBillPopup(true)}>
+          Print Check
+        </Button>
+      </div>
+      <Modal
+        title="Create Bill"
+        visible={billPopup}
+        onCancel={() => {
+          setBillPopup(false);
+        }}
+        footer={false}
+      >
+        <Form layout="vertical" onFinish={handleSubmit}>
+          <Form.Item name="customerName" label="Customer Name">
+            <Input />
+          </Form.Item>
+          <Form.Item name="customerContact" label="Customer Number">
+            <Input />
+          </Form.Item>
+          <Form.Item name="paymentMode" label="Payment Method">
+            <Select>
+              <Select.Option value="cash">Cash</Select.Option>
+              <Select.Option value="card">Card</Select.Option>
+            </Select>
+          </Form.Item>
+          <div className="bill-it">
+            <h4>Subtotal: {subTotal}</h4>
+            <h4>Tax: {((subTotal / 100) * 8.5).toFixed(2)}</h4>
+            <h4>
+              Total:
+              <b>
+                {" "}
+                {Number(subTotal) +
+                  Number(((subTotal / 100) * 8.5).toFixed(2))}{" "}
+              </b>
+            </h4>
+          </div>
+
+          <div className="d-flex justify-content-end">
+            <Button type="primary" htmlType="submit">
+              Print
+            </Button>
+          </div>
+        </Form>
+      </Modal>
     </DefaultLayout>
   );
 };
